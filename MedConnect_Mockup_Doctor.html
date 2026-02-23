@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedConnect — Doctor Interface Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D1B2A;
+    --ink-soft: #3D5066;
+    --ink-mute: #8096AB;
+    --surface: #F4F7FB;
+    --white: #FFFFFF;
+    --teal: #0C7A72;
+    --teal-light: #E0F4F2;
+    --teal-mid: #0D9488;
+    --blue: #1366D6;
+    --blue-light: #E8F1FD;
+    --green: #0F7B4A;
+    --green-light: #E3F5ED;
+    --orange: #C2410C;
+    --orange-light: #FEF0E7;
+    --red: #C5363A;
+    --red-light: #FDE9E9;
+    --yellow: #B45309;
+    --yellow-light: #FEF9C3;
+    --purple: #6D28D9;
+    --purple-light: #F3E8FF;
+    --border: #DDE4EE;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(13,27,42,0.07);
+    --shadow-md: 0 8px 32px rgba(13,27,42,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #E8EDF5; color: var(--ink); }
+
+  /* ── LAYOUT ── */
+  .app-shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+  
+  /* ── SIDEBAR ── */
+  .sidebar { background: var(--ink); display: flex; flex-direction: column; }
+  .sidebar-brand { padding: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .brand-mark { width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal-mid), var(--blue)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 800; }
+  .brand-text { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: white; }
+  .sidebar-doctor { padding: 16px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .doc-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-mid), #1366D6); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .doc-meta h4 { font-size: 13px; font-weight: 600; color: white; }
+  .doc-meta p { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .sidebar-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; margin-top: 3px; }
+  .status-online { color: #34D399; }
+  .online-dot { width: 6px; height: 6px; background: #34D399; border-radius: 50%; }
+  .sidebar-nav { flex: 1; padding: 12px 8px; }
+  .nav-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px 4px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+  .nav-item.active { background: rgba(13,148,136,0.2); color: #5EEAD4; border-left: 3px solid var(--teal-mid); padding-left: 9px; }
+  .nav-item .icon { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: var(--red); color: white; border-radius: 100px; padding: 1px 7px; font-size: 10px; font-weight: 700; }
+  .nav-badge.warn { background: var(--yellow); }
+  .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+
+  /* ── MAIN AREA ── */
+  .main-area { display: flex; flex-direction: column; min-height: 100vh; }
+  .topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 60px; box-shadow: var(--shadow); }
+  .topbar-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .topbar-btn { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; border: none; }
+  .topbar-btn-primary { background: var(--teal-mid); color: white; }
+  .topbar-btn-ghost { background: white; color: var(--ink-soft); border: 1.5px solid var(--border); }
+
+  /* ── SCREEN TABS ── */
+  .tab-bar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; gap: 0; overflow-x: auto; }
+  .tab { padding: 13px 18px; font-size: 13px; font-weight: 500; color: var(--ink-mute); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+  .tab:hover:not(.active) { color: var(--ink-soft); }
+
+  .screens-wrap { flex: 1; }
+  .screen { display: none; padding: 24px 28px; }
+  .screen.active { display: block; }
+
+  /* ─── DASHBOARD SCREEN ─── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: white; border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .kpi-icon { font-size: 24px; margin-bottom: 10px; }
+  .kpi-val { font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+  .kpi-label { font-size: 12px; font-weight: 500; color: var(--ink-mute); }
+  .kpi-trend { font-size: 12px; font-weight: 600; margin-top: 6px; }
+  .trend-up { color: var(--green); }
+  .trend-down { color: var(--red); }
+
+  .dash-grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+  .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+  .card-h { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card-action { font-size: 13px; color: var(--teal); font-weight: 500; cursor: pointer; }
+  .card-body { padding: 16px 20px; }
+
+  /* Schedule */
+  .schedule-date-nav { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .sdn-btn { border: 1px solid var(--border); background: white; border-radius: var(--radius-sm); width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); }
+  .sdn-date { font-size: 14px; font-weight: 600; }
+  .schedule-list { display: flex; flex-direction: column; gap: 10px; }
+  .sched-item { display: flex; gap: 14px; padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; position: relative; }
+  .sched-item:hover { border-color: var(--teal); background: var(--teal-light); }
+  .sched-item.active-now { border-color: var(--teal); background: var(--teal-light); }
+  .sched-item.break { background: var(--surface); border-style: dashed; }
+  .sched-time { width: 70px; flex-shrink: 0; }
+  .sched-time-start { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .sched-time-dur { font-size: 11px; color: var(--ink-mute); }
+  .sched-content { flex: 1; }
+  .sched-patient { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .sched-detail { font-size: 12px; color: var(--ink-mute); }
+  .sched-type { display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; width: fit-content; margin-top: 6px; }
+  .type-video { background: var(--blue-light); color: var(--blue); }
+  .type-new { background: var(--purple-light); color: var(--purple); }
+  .type-follow { background: var(--teal-light); color: var(--teal); }
+  .sched-actions { display: flex; gap: 6px; align-items: flex-start; }
+  .sched-btn { padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .sched-btn-start { background: var(--teal-mid); color: white; }
+  .sched-btn-chart { background: var(--surface); color: var(--ink-soft); border: 1px solid var(--border); }
+  .live-badge { position: absolute; top: -1px; right: -1px; background: var(--red); color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 0 var(--radius-sm) 0 var(--radius-sm); }
+
+  /* Action items */
+  .action-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--surface); }
+  .action-item:last-child { border-bottom: none; }
+  .action-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .ai-warn { background: var(--orange-light); }
+  .ai-info { background: var(--blue-light); }
+  .ai-ok { background: var(--green-light); }
+  .action-info { flex: 1; }
+  .action-title { font-size: 13px; font-weight: 600; margin-bottom: 1px; }
+  .action-sub { font-size: 12px; color: var(--ink-mute); }
+  .action-btn { font-size: 12px; font-weight: 600; color: var(--teal); cursor: pointer; border: 1px solid var(--teal); padding: 4px 12px; border-radius: 100px; background: none; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+
+  /* ─── EHR SCREEN ─── */
+  .ehr-layout { display: grid; grid-template-columns: 260px 1fr; gap: 0; background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; min-height: 600px; }
+  .patient-list { border-right: 1px solid var(--border); }
+  .pl-header { padding: 16px; border-bottom: 1px solid var(--border); }
+  .pl-search { display: flex; align-items: center; gap: 8px; background: var(--surface); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; color: var(--ink-mute); }
+  .pl-search input { border: none; background: transparent; outline: none; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--ink); flex: 1; }
+  .patient-item { padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-bottom: 1px solid var(--surface); transition: all 0.15s; }
+  .patient-item:hover { background: var(--surface); }
+  .patient-item.active { background: var(--teal-light); border-left: 3px solid var(--teal-mid); padding-left: 13px; }
+  .pi-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .pi-info { flex: 1; min-width: 0; }
+  .pi-name { font-size: 13px; font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pi-detail { font-size: 11px; color: var(--ink-mute); }
+  .pi-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 100px; }
+  .pib-new { background: var(--purple-light); color: var(--purple); }
+  .pib-follow { background: var(--teal-light); color: var(--teal); }
+
+  /* Patient Chart */
+  .chart-area { display: flex; flex-direction: column; }
+  .chart-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .chart-av { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 700; }
+  .chart-patient-info h2 { font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+  .chart-patient-info p { font-size: 13px; color: var(--ink-mute); }
+  .chart-quick-tags { display: flex; gap: 6px; margin-top: 6px; }
+  .cqt { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; }
+  .chart-tabs-bar { display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; }
+  .ct-tab { padding: 12px 0; margin-right: 24px; font-size: 13px; font-weight: 500; color: var(--ink-mute); border-bottom: 2px solid transparent; cursor: pointer; }
+  .ct-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+  /* SOAP Note Editor */
+  .soap-area { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .soap-meta { background: var(--surface); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; gap: 24px; font-size: 13px; flex-wrap: wrap; }
+  .soap-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .soap-meta-label { font-size: 11px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; }
+  .soap-meta-val { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .soap-section { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  .soap-section-header { padding: 10px 16px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .soap-section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-soft); display: flex; align-items: center; gap: 8px; }
+  .soap-dictate-btn { display: flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; background: var(--teal-light); color: var(--teal); border: none; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .soap-textarea { width: 100%; padding: 14px 16px; border: none; outline: none; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--ink); resize: vertical; min-height: 80px; background: white; line-height: 1.6; }
+  .soap-icd-row { padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .icd-chip { display: flex; align-items: center; gap: 6px; background: var(--teal-light); color: var(--teal); padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .icd-add { background: none; border: 1px dashed var(--border); color: var(--ink-mute); padding: 4px 10px; border-radius: 100px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .soap-actions { display: flex; gap: 10px; padding-top: 8px; }
+  .soap-btn { padding: 10px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; border: none; }
+  .soap-btn-save { background: var(--surface); color: var(--ink-soft); border: 1.5px solid var(--border); }
+  .soap-btn-rx { background: var(--orange-light); color: var(--orange); border: 1.5px solid var(--orange); }
+  .soap-btn-lab { background: var(--blue-light); color: var(--blue); border: 1.5px solid var(--blue); }
+  .soap-btn-sign { background: var(--teal-mid); color: white; }
+
+  /* ─── BILLING SCREEN ─── */
+  .billing-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .bkpi { background: white; border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .bkpi-val { font-size: 30px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .bkpi-label { font-size: 12px; color: var(--ink-mute); font-weight: 500; }
+  .bkpi-sub { font-size: 11px; font-weight: 600; margin-top: 6px; }
+
+  .claims-table { background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+  .ct-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .ct-filters { display: flex; gap: 8px; }
+  .ct-filter { padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border); font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--ink-soft); }
+  .ct-filter.active { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { padding: 12px 20px; text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--surface); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+  tbody td { padding: 14px 20px; font-size: 13px; color: var(--ink); }
+  .claim-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+  .cs-paid { background: var(--green-light); color: var(--green); }
+  .cs-pending { background: var(--yellow-light); color: var(--yellow); }
+  .cs-denied { background: var(--red-light); color: var(--red); }
+  .cs-draft { background: var(--surface); color: var(--ink-mute); }
+  .claim-action { color: var(--teal); font-weight: 600; cursor: pointer; font-size: 12px; }
+
+  /* ─── PRESCRIBING SCREEN ─── */
+  .rx-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+  .rx-form { background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .rx-form-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+  .rx-form-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-input { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--ink); outline: none; transition: border-color 0.15s; }
+  .form-input:focus { border-color: var(--teal-mid); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .drug-search-result { background: var(--surface); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 12px; border: 1.5px solid var(--teal); }
+  .drug-icon { font-size: 24px; }
+  .drug-info h4 { font-size: 14px; font-weight: 600; }
+  .drug-info p { font-size: 12px; color: var(--ink-mute); }
+  .drug-tier { margin-left: auto; text-align: right; }
+  .tier-badge { padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; background: var(--green-light); color: var(--green); }
+  .drug-alert { background: var(--orange-light); border: 1px solid var(--orange); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--orange); }
+  .rx-sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .rx-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px; }
+  .rx-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .pharmacy-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--surface); cursor: pointer; }
+  .pharmacy-item:last-child { border-bottom: none; }
+  .pharmacy-item.selected { color: var(--teal); }
+  .ph-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pharmacy-item.selected .ph-radio { border-color: var(--teal); background: var(--teal); }
+  .ph-name { font-size: 13px; font-weight: 600; }
+  .ph-detail { font-size: 12px; color: var(--ink-mute); }
+  .mhx-item { padding: 8px 0; border-bottom: 1px solid var(--surface); font-size: 13px; display: flex; justify-content: space-between; }
+  .mhx-item:last-child { border-bottom: none; }
+  .mhx-drug { font-weight: 500; }
+  .mhx-date { color: var(--ink-mute); font-size: 12px; }
+
+  /* ─── ANALYTICS SCREEN ─── */
+  .analytics-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .chart-placeholder { background: linear-gradient(135deg, var(--teal-light), var(--blue-light)); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink-mute); position: relative; overflow: hidden; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 6px; padding: 20px; width: 100%; }
+  .bar { background: var(--teal-mid); border-radius: 4px 4px 0 0; opacity: 0.8; flex: 1; transition: opacity 0.15s; cursor: pointer; }
+  .bar:hover { opacity: 1; }
+  .bar.highlight { background: var(--blue); opacity: 1; }
+  .denial-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .denial-label { font-size: 13px; color: var(--ink-soft); width: 180px; flex-shrink: 0; }
+  .denial-bar-wrap { flex: 1; background: var(--surface); border-radius: 100px; height: 8px; overflow: hidden; }
+  .denial-bar-fill { height: 100%; border-radius: 100px; }
+  .denial-pct { font-size: 13px; font-weight: 600; color: var(--ink); width: 36px; text-align: right; }
+
+  /* Utilities */
+  .mb16 { margin-bottom: 16px; }
+  .mb24 { margin-bottom: 24px; }
+  .text-mute { color: var(--ink-mute); font-size: 13px; }
+  .tag-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">M</div>
+      <span class="brand-text">MedConnect</span>
+    </div>
+    <div class="sidebar-doctor">
+      <div class="doc-avatar">SC</div>
+      <div class="doc-meta">
+        <h4>Dr. Sarah Chen</h4>
+        <p>Dermatology</p>
+        <div class="sidebar-status status-online"><div class="online-dot"></div>Available</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" onclick="showScreen('dashboard');setActive(this)"><span class="icon">🏠</span>Dashboard</div>
+      <div class="nav-item" onclick="showScreen('ehr');setActive(this)"><span class="icon">📋</span>Patient Charts</div>
+      <div class="nav-item" onclick="showScreen('billing');setActive(this)"><span class="icon">💳</span>Billing & Claims<span class="nav-badge warn">7</span></div>
+      <div class="nav-item" onclick="showScreen('prescribe');setActive(this)"><span class="icon">💊</span>E-Prescribing</div>
+      <div class="nav-item" onclick="showScreen('analytics');setActive(this)"><span class="icon">📊</span>Analytics</div>
+      <div class="nav-section-label" style="margin-top:12px;">Tools</div>
+      <div class="nav-item"><span class="icon">💬</span>Messages<span class="nav-badge">3</span></div>
+      <div class="nav-item"><span class="icon">📅</span>Schedule</div>
+      <div class="nav-item"><span class="icon">🔔</span>Notifications</div>
+      <div class="nav-section-label" style="margin-top:12px;">Practice</div>
+      <div class="nav-item"><span class="icon">🏥</span>Practice Settings</div>
+      <div class="nav-item"><span class="icon">🛡️</span>Insurance Networks</div>
+      <div class="nav-item"><span class="icon">⚙️</span>Preferences</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="nav-item" style="padding-left:0;"><span class="icon">❓</span><span style="font-size:13px;color:rgba(255,255,255,0.5);">Help & Support</span></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="topbar">
+      <div class="topbar-title" id="screen-title">Dashboard</div>
+      <div class="topbar-right">
+        <button class="topbar-btn topbar-btn-ghost">📅 Mon, Feb 23, 2026</button>
+        <button class="topbar-btn topbar-btn-primary">+ New Appointment</button>
+        <button style="width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;">🔔</button>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab active" onclick="showScreen('dashboard');setTab(this)">🏠 Dashboard</div>
+      <div class="tab" onclick="showScreen('ehr');setTab(this)">📋 Patient Charts / EHR</div>
+      <div class="tab" onclick="showScreen('billing');setTab(this)">💳 Billing & Claims</div>
+      <div class="tab" onclick="showScreen('prescribe');setTab(this)">💊 E-Prescribing</div>
+      <div class="tab" onclick="showScreen('analytics');setTab(this)">📊 Analytics</div>
+    </div>
+
+    <div class="screens-wrap">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div id="screen-dashboard" class="screen active">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-icon">📅</div><div class="kpi-val">8</div><div class="kpi-label">Today's Appointments</div><div class="kpi-trend trend-up">↑ 2 more than avg</div></div>
+        <div class="kpi"><div class="kpi-icon">✅</div><div class="kpi-val">6</div><div class="kpi-label">Completed Today</div><div class="kpi-trend trend-up">↑ On track</div></div>
+        <div class="kpi"><div class="kpi-icon">💰</div><div class="kpi-val">$1,240</div><div class="kpi-label">Est. Revenue Today</div><div class="kpi-trend trend-up">↑ +12% vs last Mon</div></div>
+        <div class="kpi"><div class="kpi-icon">⭐</div><div class="kpi-val">4.9</div><div class="kpi-label">Avg Rating (30 days)</div><div class="kpi-trend trend-up">↑ Top 5% of platform</div></div>
+      </div>
+
+      <div class="dash-grid">
+        <!-- Schedule -->
+        <div class="card">
+          <div class="card-h">
+            <div class="card-title">📅 Today's Schedule</div>
+            <div class="card-action">Manage Schedule</div>
+          </div>
+          <div class="card-body">
+            <div class="schedule-date-nav">
+              <button class="sdn-btn">‹</button>
+              <div class="sdn-date">Monday, February 23, 2026</div>
+              <button class="sdn-btn">›</button>
+            </div>
+            <div class="schedule-list">
+              <div class="sched-item active-now">
+                <div class="live-badge">● LIVE</div>
+                <div class="sched-time"><div class="sched-time-start">9:00 AM</div><div class="sched-time-dur">30 min</div></div>
+                <div class="sched-content">
+                  <div class="sched-patient">Priya Mehta</div>
+                  <div class="sched-detail">DOB: Jun 12, 1991 · Rash / Eczema screening</div>
+                  <div class="sched-type type-new">🆕 New Patient</div>
+                </div>
+                <div class="sched-actions">
+                  <button class="sched-btn sched-btn-start">Start →</button>
+                  <button class="sched-btn sched-btn-chart">Chart</button>
+                </div>
+              </div>
+              <div class="sched-item">
+                <div class="sched-time"><div class="sched-time-start">9:30 AM</div><div class="sched-time-dur">30 min</div></div>
+                <div class="sched-content">
+                  <div class="sched-patient">Robert Tan</div>
+                  <div class="sched-detail">DOB: Mar 3, 1966 · Psoriasis follow-up</div>
+                  <div class="sched-type type-follow">🔄 Follow-up</div>
+                </div>
+                <div class="sched-actions">
+                  <button class="sched-btn sched-btn-chart">Chart</button>
+                </div>
+              </div>
+              <div class="sched-item break">
+                <div class="sched-time"><div class="sched-time-start">10:00 AM</div><div class="sched-time-dur">30 min</div></div>
+                <div class="sched-content" style="color:var(--ink-mute);"><div class="sched-patient">— Break —</div></div>
+              </div>
+              <div class="sched-item">
+                <div class="sched-time"><div class="sched-time-start">10:30 AM</div><div class="sched-time-dur">45 min</div></div>
+                <div class="sched-content">
+                  <div class="sched-patient">Amanda Kumar</div>
+                  <div class="sched-detail">DOB: Sep 18, 1998 · Acne treatment review</div>
+                  <div class="sched-type type-follow">🔄 Follow-up</div>
+                </div>
+                <div class="sched-actions"><button class="sched-btn sched-btn-chart">Chart</button></div>
+              </div>
+              <div class="sched-item">
+                <div class="sched-time"><div class="sched-time-start">2:00 PM</div><div class="sched-time-dur">30 min</div></div>
+                <div class="sched-content">
+                  <div class="sched-patient">David Lee</div>
+                  <div class="sched-detail">DOB: Jan 5, 1954 · Melanoma surveillance 💻</div>
+                  <div class="sched-type type-video">💻 Video — New Patient</div>
+                </div>
+                <div class="sched-actions"><button class="sched-btn sched-btn-chart">Chart</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action items + Stats -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card">
+            <div class="card-h">
+              <div class="card-title">⚠️ Actions Needed</div>
+              <span style="background:var(--red);color:white;border-radius:100px;padding:2px 8px;font-size:11px;font-weight:700;">6</span>
+            </div>
+            <div class="card-body">
+              <div class="action-item">
+                <div class="action-icon ai-warn">🧪</div>
+                <div class="action-info"><div class="action-title">3 Lab Results to Review</div><div class="action-sub">Robert T., Amanda K., David L.</div></div>
+                <button class="action-btn">Review</button>
+              </div>
+              <div class="action-item">
+                <div class="action-icon ai-warn">💊</div>
+                <div class="action-info"><div class="action-title">2 Refill Requests</div><div class="action-sub">Metformin, Tretinoin 0.025%</div></div>
+                <button class="action-btn">Review</button>
+              </div>
+              <div class="action-item">
+                <div class="action-icon ai-warn">❌</div>
+                <div class="action-info"><div class="action-title">1 Claim Denied — Action Required</div><div class="action-sub">Aetna · Missing PA · $185.00</div></div>
+                <button class="action-btn">Fix</button>
+              </div>
+              <div class="action-item">
+                <div class="action-icon ai-info">💬</div>
+                <div class="action-info"><div class="action-title">3 Patient Messages</div><div class="action-sub">Unread · avg. response expected 24h</div></div>
+                <button class="action-btn">Reply</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><div class="card-title">💰 This Week's Revenue</div></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:14px;">
+                  <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Collected</div>
+                  <div style="font-size:26px;font-weight:700;color:var(--teal);">$4,380</div>
+                </div>
+                <div style="background:var(--yellow-light);border-radius:var(--radius-sm);padding:14px;">
+                  <div style="font-size:11px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Pending</div>
+                  <div style="font-size:26px;font-weight:700;color:var(--yellow);">$1,910</div>
+                </div>
+              </div>
+              <div style="margin-top:12px;font-size:12px;color:var(--ink-mute);">Next payout: <strong style="color:var(--ink);">Friday, Feb 28 · ~$4,380</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ EHR ════ -->
+    <div id="screen-ehr" class="screen">
+      <div class="ehr-layout">
+        <div class="patient-list">
+          <div class="pl-header">
+            <div class="pl-search">🔍 <input type="text" placeholder="Search patients..."></div>
+          </div>
+          <div class="patient-item active">
+            <div class="pi-av" style="background:linear-gradient(135deg,#667eea,#764ba2)">PM</div>
+            <div class="pi-info">
+              <div class="pi-name">Priya Mehta</div>
+              <div class="pi-detail">34F · Today 9:00 AM</div>
+            </div>
+            <span class="pi-badge pib-new">New</span>
+          </div>
+          <div class="patient-item">
+            <div class="pi-av" style="background:linear-gradient(135deg,#0C9085,#1366D6)">RT</div>
+            <div class="pi-info">
+              <div class="pi-name">Robert Tan</div>
+              <div class="pi-detail">58M · Today 9:30 AM</div>
+            </div>
+            <span class="pi-badge pib-follow">F/U</span>
+          </div>
+          <div class="patient-item">
+            <div class="pi-av" style="background:linear-gradient(135deg,#D4550A,#C5363A)">AK</div>
+            <div class="pi-info">
+              <div class="pi-name">Amanda Kumar</div>
+              <div class="pi-detail">26F · Today 10:30 AM</div>
+            </div>
+            <span class="pi-badge pib-follow">F/U</span>
+          </div>
+          <div class="patient-item">
+            <div class="pi-av" style="background:linear-gradient(135deg,#6D28D9,#0C9085)">DL</div>
+            <div class="pi-info">
+              <div class="pi-name">David Lee</div>
+              <div class="pi-detail">70M · Today 2:00 PM</div>
+            </div>
+            <span class="pi-badge pib-new">New</span>
+          </div>
+        </div>
+
+        <div class="chart-area">
+          <div class="chart-header">
+            <div class="chart-av">PM</div>
+            <div class="chart-patient-info">
+              <h2>Priya Mehta</h2>
+              <p>DOB: Jun 12, 1991 (34F) · MRN: MC-2891044 · Aetna PPO · NKDA</p>
+              <div class="chart-quick-tags">
+                <span class="cqt" style="background:var(--red-light);color:var(--red)">⚠️ No known allergies</span>
+                <span class="cqt" style="background:var(--blue-light);color:var(--blue)">💊 Loratadine 10mg PRN</span>
+                <span class="cqt" style="background:var(--surface);color:var(--ink-mute)">📋 1 prior visit</span>
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:8px;">
+              <button class="sched-btn sched-btn-chart" onclick="showScreen('prescribe');setTab(document.querySelectorAll('.tab')[3])">💊 Prescribe</button>
+              <button class="sched-btn sched-btn-start">🔴 Start Visit</button>
+            </div>
+          </div>
+
+          <div class="chart-tabs-bar">
+            <div class="ct-tab active">📝 SOAP Note</div>
+            <div class="ct-tab">🩺 Problems</div>
+            <div class="ct-tab">💊 Medications</div>
+            <div class="ct-tab">🧪 Labs</div>
+            <div class="ct-tab">📁 Documents</div>
+            <div class="ct-tab">🕐 History</div>
+          </div>
+
+          <div class="soap-area">
+            <div class="soap-meta">
+              <div class="soap-meta-item"><div class="soap-meta-label">Visit Date</div><div class="soap-meta-val">Feb 23, 2026</div></div>
+              <div class="soap-meta-item"><div class="soap-meta-label">Visit Type</div><div class="soap-meta-val">💻 Telehealth — New Patient</div></div>
+              <div class="soap-meta-item"><div class="soap-meta-label">Duration</div><div class="soap-meta-val">30 min</div></div>
+              <div class="soap-meta-item"><div class="soap-meta-label">Provider</div><div class="soap-meta-val">Dr. Sarah Chen, MD</div></div>
+              <div class="soap-meta-item"><div class="soap-meta-label">Status</div><div class="soap-meta-val" style="color:var(--orange);">● Draft</div></div>
+            </div>
+
+            <div class="soap-section">
+              <div class="soap-section-header">
+                <div class="soap-section-label"><span style="color:var(--blue);font-size:16px;font-weight:800;">S</span> Subjective</div>
+                <button class="soap-dictate-btn">🎤 Dictate</button>
+              </div>
+              <textarea class="soap-textarea">34-year-old female presents via telehealth with a 2-week history of pruritic erythematous rash on bilateral forearms. Patient reports significant itching, particularly nocturnal. No fever, no systemic symptoms. Denies recent new soaps, detergents, or medications. Works as software engineer, primarily remote.</textarea>
+            </div>
+
+            <div class="soap-section">
+              <div class="soap-section-header">
+                <div class="soap-section-label"><span style="color:var(--teal);font-size:16px;font-weight:800;">O</span> Objective</div>
+                <button class="soap-dictate-btn">🎤 Dictate</button>
+              </div>
+              <textarea class="soap-textarea" style="min-height:60px;">Vitals: BP 118/74, HR 72, RR 14, T 98.4°F
+Dermatology (via telehealth exam): Bilateral forearm erythema with papular rash, mild excoriation from scratching. No vesicles, no weeping. Lesion pattern consistent with contact exposure.</textarea>
+            </div>
+
+            <div class="soap-section">
+              <div class="soap-section-header">
+                <div class="soap-section-label"><span style="color:var(--orange);font-size:16px;font-weight:800;">A</span> Assessment</div>
+              </div>
+              <div class="soap-icd-row">
+                <span style="font-size:12px;font-weight:600;color:var(--ink-mute);">Diagnoses:</span>
+                <span class="icd-chip">L25.9 — Unspecified Contact Dermatitis ✕</span>
+                <button class="icd-add">+ Add Diagnosis</button>
+              </div>
+              <textarea class="soap-textarea" style="min-height:60px;">Contact dermatitis, likely irritant type, bilateral forearms. Pattern suggests occupational or environmental trigger. Rule out allergic contact dermatitis.</textarea>
+            </div>
+
+            <div class="soap-section">
+              <div class="soap-section-header">
+                <div class="soap-section-label"><span style="color:var(--purple);font-size:16px;font-weight:800;">P</span> Plan</div>
+              </div>
+              <textarea class="soap-textarea">1. Rx: Hydrocortisone 1% cream, apply BID to affected areas × 14 days
+2. Avoid identified irritants; use fragrance-free soap/detergent
+3. If no improvement in 2 weeks, consider patch testing for allergic contact dermatitis
+4. Return precautions: spreading rash, fever, purulent discharge — go to ED</textarea>
+              <div class="soap-icd-row">
+                <span style="font-size:12px;font-weight:600;color:var(--ink-mute);">CPT Codes (AI suggested):</span>
+                <span class="icd-chip" style="background:var(--purple-light);color:var(--purple);">99203 — Office Visit, New, Low Complexity ✕</span>
+                <button class="icd-add">+ Add CPT</button>
+              </div>
+            </div>
+
+            <div class="soap-actions">
+              <button class="soap-btn soap-btn-save">💾 Save Draft</button>
+              <button class="soap-btn soap-btn-rx" onclick="showScreen('prescribe');setTab(document.querySelectorAll('.tab')[3])">💊 Prescribe</button>
+              <button class="soap-btn soap-btn-lab">🧪 Order Labs</button>
+              <button class="soap-btn" style="background:var(--blue-light);color:var(--blue);border:1.5px solid var(--blue);">📤 Referral</button>
+              <button class="soap-btn soap-btn-sign" style="margin-left:auto;">✍️ Sign & Lock Note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ BILLING ════ -->
+    <div id="screen-billing" class="screen">
+      <div class="billing-kpi">
+        <div class="bkpi"><div class="bkpi-val">$18,400</div><div class="bkpi-label">Total Charges — Feb</div><div class="bkpi-sub" style="color:var(--green);">↑ +8% vs Jan</div></div>
+        <div class="bkpi"><div class="bkpi-val" style="color:var(--green);">$14,200</div><div class="bkpi-label">Collected — Feb</div><div class="bkpi-sub" style="color:var(--green);">77% collection rate</div></div>
+        <div class="bkpi"><div class="bkpi-val" style="color:var(--yellow);">$2,100</div><div class="bkpi-label">Pending Claims</div><div class="bkpi-sub" style="color:var(--ink-mute);">18 claims in flight</div></div>
+        <div class="bkpi"><div class="bkpi-val" style="color:var(--red);">$1,295</div><div class="bkpi-label">Denied / Action Needed</div><div class="bkpi-sub" style="color:var(--red);">7 claims — act now</div></div>
+      </div>
+
+      <div class="claims-table">
+        <div class="ct-header">
+          <div class="card-title">📋 Claims</div>
+          <div class="ct-filters">
+            <button class="ct-filter active" onclick="filterClaims(this)">All</button>
+            <button class="ct-filter" onclick="filterClaims(this)">Paid</button>
+            <button class="ct-filter" onclick="filterClaims(this)">Pending</button>
+            <button class="ct-filter" onclick="filterClaims(this)">Denied</button>
+            <button class="ct-filter" onclick="filterClaims(this)">Draft</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Patient</th><th>Date of Service</th><th>CPT / ICD</th><th>Payer</th><th>Billed</th><th>Paid</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Priya Mehta</strong></td><td>Feb 23, 2026</td><td>99203 / L25.9</td><td>Aetna</td><td>$185</td><td>—</td><td><span class="claim-status cs-draft">📝 Draft</span></td><td><span class="claim-action">Submit</span></td></tr>
+            <tr><td><strong>Robert Tan</strong></td><td>Feb 20, 2026</td><td>99213 / L40.0</td><td>BlueCross</td><td>$165</td><td>$142</td><td><span class="claim-status cs-paid">✅ Paid</span></td><td><span class="claim-action">View ERA</span></td></tr>
+            <tr><td><strong>Amanda Kumar</strong></td><td>Feb 18, 2026</td><td>99214 / L70.0</td><td>Cigna</td><td>$210</td><td>—</td><td><span class="claim-status cs-pending">⏳ Pending</span></td><td><span class="claim-action">Track</span></td></tr>
+            <tr style="background:var(--red-light)"><td><strong>David Lee</strong></td><td>Feb 15, 2026</td><td>99203 / D03.9</td><td>Humana</td><td>$185</td><td>—</td><td><span class="claim-status cs-denied">❌ Denied</span></td><td><span class="claim-action" style="color:var(--red)">Fix Now →</span></td></tr>
+            <tr><td><strong>Maria Santos</strong></td><td>Feb 14, 2026</td><td>99213 / L50.0</td><td>United</td><td>$165</td><td>$138</td><td><span class="claim-status cs-paid">✅ Paid</span></td><td><span class="claim-action">View ERA</span></td></tr>
+            <tr><td><strong>Tom Wright</strong></td><td>Feb 12, 2026</td><td>99202 / L23.9</td><td>Medicare</td><td>$145</td><td>—</td><td><span class="claim-status cs-pending">⏳ Pending</span></td><td><span class="claim-action">Track</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ E-PRESCRIBING ════ -->
+    <div id="screen-prescribe" class="screen">
+      <div class="rx-layout">
+        <div class="rx-form">
+          <div class="rx-form-header">
+            <div style="font-size:16px;font-weight:600;margin-bottom:4px;">New Prescription</div>
+            <div style="font-size:13px;color:var(--ink-mute);">Patient: <strong>Priya Mehta</strong> · DOB: Jun 12, 1991 · Aetna PPO</div>
+          </div>
+          <div class="rx-form-body">
+            <!-- Drug Search -->
+            <div class="form-group">
+              <div class="form-label">Drug Search</div>
+              <div class="drug-search-result">
+                <div class="drug-icon">💊</div>
+                <div class="drug-info">
+                  <h4>Hydrocortisone 1% Cream</h4>
+                  <p>Generic available · Topical corticosteroid (Class VII)</p>
+                </div>
+                <div class="drug-tier">
+                  <div class="tier-badge">Tier 1</div>
+                  <div style="font-size:11px;color:var(--ink-mute);margin-top:4px;">~$8 copay</div>
+                </div>
+              </div>
+              <div class="drug-alert">
+                <span>ℹ️</span>
+                <span>No drug-drug interactions found. No allergy conflicts. Patient last received topical corticosteroid 8 months ago.</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Strength / Dose</div>
+                <input class="form-input" type="text" value="1% Cream">
+              </div>
+              <div class="form-group">
+                <div class="form-label">Route</div>
+                <input class="form-input" type="text" value="Topical">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label">Sig (Instructions)</div>
+              <input class="form-input" type="text" value="Apply a thin layer to affected area twice daily. Do not use on face.">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Quantity</div>
+                <input class="form-input" type="text" value="30g tube">
+              </div>
+              <div class="form-group">
+                <div class="form-label">Days Supply</div>
+                <input class="form-input" type="text" value="14 days">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Refills</div>
+                <input class="form-input" type="text" value="1">
+              </div>
+              <div class="form-group">
+                <div class="form-label">DAW (Dispense As Written)</div>
+                <input class="form-input" type="text" value="No — Generic substitution OK">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label">Notes to Pharmacist</div>
+              <input class="form-input" type="text" placeholder="Optional notes...">
+            </div>
+
+            <div style="display:flex;gap:10px;padding-top:8px;">
+              <button class="soap-btn soap-btn-save">Preview Rx</button>
+              <button class="soap-btn soap-btn-sign" style="flex:1;text-align:center;">📤 Send to Pharmacy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="rx-sidebar">
+          <div class="rx-card">
+            <h3>🏥 Select Pharmacy</h3>
+            <div class="pharmacy-item selected">
+              <div class="ph-radio"></div>
+              <div>
+                <div class="ph-name">Walgreens — 5th Ave</div>
+                <div class="ph-detail">0.4 mi · In-network · 24hr</div>
+              </div>
+            </div>
+            <div class="pharmacy-item">
+              <div class="ph-radio"></div>
+              <div>
+                <div class="ph-name">CVS — E 23rd St</div>
+                <div class="ph-detail">0.8 mi · In-network</div>
+              </div>
+            </div>
+            <div class="pharmacy-item">
+              <div class="ph-radio"></div>
+              <div>
+                <div class="ph-name">Amazon Pharmacy</div>
+                <div class="ph-detail">Mail order · Delivery 1-2 days</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rx-card">
+            <h3>📋 Medication History</h3>
+            <div class="mhx-item"><span class="mhx-drug">Loratadine 10mg</span><span class="mhx-date">Active</span></div>
+            <div class="mhx-item"><span class="mhx-drug">Ibuprofen 400mg</span><span class="mhx-date">Feb 2025</span></div>
+            <div class="mhx-item"><span class="mhx-drug">Amoxicillin 500mg</span><span class="mhx-date">Oct 2024</span></div>
+            <div class="mhx-item"><span class="mhx-drug">Triamcinolone 0.1%</span><span class="mhx-date">Jun 2024</span></div>
+          </div>
+
+          <div class="rx-card" style="background:var(--teal-light);border-color:var(--teal);">
+            <h3 style="color:var(--teal);">🛡️ PDMP Check</h3>
+            <div style="font-size:13px;color:var(--teal);"><strong>No controlled substances</strong> on record for this patient in NY state database.</div>
+            <div style="font-size:11px;color:var(--teal-mid);margin-top:8px;">Checked: Today at 9:02 AM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ANALYTICS ════ -->
+    <div id="screen-analytics" class="screen">
+      <div class="analytics-kpi">
+        <div class="bkpi"><div class="bkpi-val">312</div><div class="bkpi-label">Total Patients (Active)</div><div class="bkpi-sub trend-up" style="color:var(--green);">↑ +24 this month</div></div>
+        <div class="bkpi"><div class="bkpi-val">87%</div><div class="bkpi-label">Appt. Completion Rate</div><div class="bkpi-sub trend-up" style="color:var(--green);">↑ +3% vs avg</div></div>
+        <div class="bkpi"><div class="bkpi-val">$52,300</div><div class="bkpi-label">Revenue — Last 30 Days</div><div class="bkpi-sub trend-up" style="color:var(--green);">↑ +11% vs prior</div></div>
+        <div class="bkpi"><div class="bkpi-val">4.9 ⭐</div><div class="bkpi-label">Avg Patient Rating</div><div class="bkpi-sub" style="color:var(--teal);">Top 5% platform-wide</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="card">
+          <div class="card-h"><div class="card-title">📅 Monthly Appointments</div><div class="card-action">Last 6 months</div></div>
+          <div class="card-body">
+            <div class="chart-placeholder" style="height:160px;">
+              <div class="chart-bars" style="align-items:flex-end;padding:20px 20px 0;">
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar" style="height:72px;"></div><div style="font-size:10px;color:var(--ink-mute);">Sep</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar" style="height:88px;"></div><div style="font-size:10px;color:var(--ink-mute);">Oct</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar" style="height:104px;"></div><div style="font-size:10px;color:var(--ink-mute);">Nov</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar" style="height:80px;"></div><div style="font-size:10px;color:var(--ink-mute);">Dec</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar" style="height:116px;"></div><div style="font-size:10px;color:var(--ink-mute);">Jan</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px;"><div class="bar highlight" style="height:128px;"></div><div style="font-size:10px;color:var(--blue);font-weight:700;">Feb</div></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:12px;color:var(--ink-mute);">
+              <span>Avg: 94/month</span><span style="color:var(--blue);font-weight:600;">Feb: 112 ↑ 19%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><div class="card-title">💰 Revenue Breakdown</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+              <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;margin-bottom:4px;">Insurance</div><div style="font-size:22px;font-weight:700;color:var(--teal);">$41,840</div><div style="font-size:11px;color:var(--teal-mid);">80% of revenue</div></div>
+              <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:4px;">Self-Pay</div><div style="font-size:22px;font-weight:700;color:var(--blue);">$10,460</div><div style="font-size:11px;color:var(--blue-mid);">20% of revenue</div></div>
+            </div>
+            <div style="font-size:12px;color:var(--ink-mute);">Top payers: Aetna (34%) · BlueCross (28%) · Cigna (19%)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><div class="card-title">❌ Top Claim Denial Reasons — Feb 2026</div><div class="card-action">Export Report</div></div>
+        <div class="card-body">
+          <div class="denial-row">
+            <div class="denial-label">Missing Prior Authorization</div>
+            <div class="denial-bar-wrap"><div class="denial-bar-fill" style="width:43%;background:var(--red);"></div></div>
+            <div class="denial-pct">43%</div>
+          </div>
+          <div class="denial-row">
+            <div class="denial-label">Duplicate Claim</div>
+            <div class="denial-bar-wrap"><div class="denial-bar-fill" style="width:28%;background:var(--orange);"></div></div>
+            <div class="denial-pct">28%</div>
+          </div>
+          <div class="denial-row">
+            <div class="denial-label">Eligibility Mismatch</div>
+            <div class="denial-bar-wrap"><div class="denial-bar-fill" style="width:19%;background:var(--yellow);"></div></div>
+            <div class="denial-pct">19%</div>
+          </div>
+          <div class="denial-row">
+            <div class="denial-label">Invalid CPT-Dx Pairing</div>
+            <div class="denial-bar-wrap"><div class="denial-bar-fill" style="width:10%;background:var(--blue);"></div></div>
+            <div class="denial-pct">10%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- end screens-wrap -->
+  </div>
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  const titles = { dashboard:'Dashboard', ehr:'Patient Charts / EHR', billing:'Billing & Claims', prescribe:'E-Prescribing', analytics:'Analytics' };
+  document.getElementById('screen-title').textContent = titles[name] || name;
+}
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+function setTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function filterClaims(el) {
+  document.querySelectorAll('.ct-filter').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

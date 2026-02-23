@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedConnect — Patient Interface Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D1B2A;
+    --ink-soft: #3D5066;
+    --ink-mute: #8096AB;
+    --surface: #F4F7FB;
+    --white: #FFFFFF;
+    --blue: #1366D6;
+    --blue-light: #E8F1FD;
+    --blue-mid: #2B7BE5;
+    --teal: #0C9085;
+    --teal-light: #E0F4F2;
+    --green: #0F7B4A;
+    --green-light: #E3F5ED;
+    --orange: #D4550A;
+    --orange-light: #FEF0E7;
+    --red: #C5363A;
+    --red-light: #FDE9E9;
+    --yellow: #C08A00;
+    --yellow-light: #FFF8E1;
+    --border: #DDE4EE;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 20px;
+    --shadow: 0 2px 12px rgba(13,27,42,0.08);
+    --shadow-md: 0 8px 32px rgba(13,27,42,0.12);
+    --shadow-lg: 0 24px 64px rgba(13,27,42,0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #E8EDF5; color: var(--ink); }
+
+  /* NAV */
+  .nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(13,27,42,0.06); }
+  .nav-logo { display: flex; align-items: center; gap: 8px; }
+  .nav-logo-mark { width: 32px; height: 32px; background: linear-gradient(135deg, var(--blue), var(--teal)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 700; }
+  .nav-logo-text { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; border: none; background: none; }
+  .nav-link:hover, .nav-link.active { background: var(--blue-light); color: var(--blue); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-notif { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: none; }
+  .notif-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; position: absolute; top: 6px; right: 6px; border: 2px solid white; }
+  .nav-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  /* TABS */
+  .tab-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; gap: 0; }
+  .tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: var(--ink-mute); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .tab:hover:not(.active) { color: var(--ink-soft); }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ────────────────────────────── SCREEN 1: SEARCH ────────────────────────────── */
+  .search-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1366D6 60%, #0C9085 100%); padding: 48px 32px 80px; position: relative; overflow: hidden; }
+  .search-hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .search-hero-title { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 300; color: white; line-height: 1.2; margin-bottom: 8px; position: relative; }
+  .search-hero-title em { font-style: italic; color: #7DD3D0; }
+  .search-hero-sub { color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 32px; font-weight: 300; position: relative; }
+  .search-bar-wrap { background: white; border-radius: var(--radius-lg); padding: 6px 6px 6px 20px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-lg); position: relative; max-width: 720px; }
+  .search-bar-wrap input { flex: 1; border: none; outline: none; font-size: 16px; font-family: 'DM Sans', sans-serif; color: var(--ink); background: transparent; }
+  .search-bar-wrap input::placeholder { color: var(--ink-mute); }
+  .search-divider { width: 1px; height: 32px; background: var(--border); }
+  .search-location { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); padding: 0 12px; cursor: pointer; }
+  .search-btn { background: var(--blue); color: white; border: none; border-radius: var(--radius); padding: 12px 24px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
+  .search-btn:hover { background: var(--blue-mid); }
+  .search-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; position: relative; }
+  .search-chip { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all 0.15s; backdrop-filter: blur(8px); }
+  .search-chip:hover { background: rgba(255,255,255,0.25); }
+
+  .search-body { padding: 0 32px; margin-top: -36px; }
+  .filter-row { background: white; border-radius: var(--radius); padding: 12px 16px; display: flex; gap: 8px; align-items: center; box-shadow: var(--shadow); margin-bottom: 24px; flex-wrap: wrap; }
+  .filter-btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: white; font-size: 13px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .filter-btn.active::after { content: ' ✓'; }
+  .filter-sep { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+  .results-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .results-count { font-size: 14px; color: var(--ink-soft); }
+  .results-count strong { color: var(--ink); }
+  .sort-sel { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; background: white; }
+
+  .doctor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .doctor-card { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: all 0.2s; cursor: pointer; }
+  .doctor-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--blue); }
+  .dc-header { display: flex; gap: 14px; margin-bottom: 14px; }
+  .dc-avatar { width: 64px; height: 64px; border-radius: var(--radius); object-fit: cover; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+  .dc-av-2 { background: linear-gradient(135deg, #0C9085, #1366D6); }
+  .dc-av-3 { background: linear-gradient(135deg, #D4550A, #C5363A); }
+  .dc-av-4 { background: linear-gradient(135deg, #6D28D9, #0C9085); }
+  .dc-info { flex: 1; min-width: 0; }
+  .dc-name { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .dc-spec { font-size: 13px; color: var(--ink-mute); margin-bottom: 6px; }
+  .dc-rating { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .stars { color: #FBBF24; letter-spacing: -1px; font-size: 14px; }
+  .dc-rating span { color: var(--ink-soft); }
+  .dc-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .badge-verified { background: var(--teal-light); color: var(--teal); }
+  .dc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .dc-tag { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+  .tag-ins { background: var(--blue-light); color: var(--blue); }
+  .tag-loc { background: var(--surface); color: var(--ink-soft); }
+  .tag-tele { background: var(--teal-light); color: var(--teal); }
+  .dc-avail { background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+  .dc-avail-text { font-size: 13px; color: var(--green); font-weight: 500; }
+  .dc-avail-time { font-size: 13px; font-weight: 700; color: var(--green); }
+  .dc-actions { display: flex; gap: 8px; }
+  .btn-ghost { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: white; font-size: 13px; font-weight: 600; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .btn-primary { flex: 2; padding: 10px; border: none; border-radius: var(--radius-sm); background: var(--blue); font-size: 13px; font-weight: 600; color: white; cursor: pointer; transition: background 0.15s; font-family: 'DM Sans', sans-serif; }
+  .btn-primary:hover { background: var(--blue-mid); }
+
+  /* ────────────────────────────── SCREEN 2: BOOKING ────────────────────────────── */
+  .booking-wrap { max-width: 1000px; margin: 0 auto; padding: 32px; display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  .booking-main { background: white; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
+  .booking-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .booking-doc-av { width: 56px; height: 56px; border-radius: var(--radius-sm); background: linear-gradient(135deg, #0C9085, #1366D6); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: 700; }
+  .booking-doc-info h2 { font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+  .booking-doc-info p { font-size: 13px; color: var(--ink-mute); }
+  .booking-steps { display: flex; padding: 0 24px; border-bottom: 1px solid var(--border); gap: 0; overflow-x: auto; }
+  .bstep { padding: 16px 0; margin-right: 32px; font-size: 13px; font-weight: 500; color: var(--ink-mute); border-bottom: 2px solid transparent; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .bstep.done { color: var(--teal); }
+  .bstep.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .bstep-num { width: 22px; height: 22px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .bstep.done .bstep-num { background: var(--teal); border-color: var(--teal); color: white; }
+  .bstep.done .bstep-num::before { content: '✓'; }
+  .booking-content { padding: 28px; }
+  .booking-section-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .booking-section-sub { font-size: 14px; color: var(--ink-mute); margin-bottom: 24px; }
+
+  /* Calendar */
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-nav-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--ink-soft); }
+  .cal-month { font-size: 16px; font-weight: 600; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-day-name { text-align: center; font-size: 11px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; padding: 4px 0 8px; letter-spacing: 0.5px; }
+  .cal-day { height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: all 0.15s; position: relative; }
+  .cal-day.other { color: var(--ink-mute); opacity: 0.4; pointer-events: none; }
+  .cal-day.past { color: var(--ink-mute); cursor: not-allowed; }
+  .cal-day.available { color: var(--ink); }
+  .cal-day.available:hover { background: var(--blue-light); color: var(--blue); }
+  .cal-day.has-slots::after { content: ''; width: 4px; height: 4px; background: var(--green); border-radius: 50%; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); }
+  .cal-day.selected { background: var(--blue); color: white; font-weight: 600; }
+  .cal-day.selected::after { background: white; }
+
+  .time-slots { margin-top: 24px; }
+  .time-slots h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.5px; font-size: 12px; }
+  .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .time-slot { padding: 10px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.15s; background: white; }
+  .time-slot:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .time-slot.selected { border-color: var(--blue); background: var(--blue); color: white; }
+  .time-slot.booked { border-color: var(--border); background: var(--surface); color: var(--ink-mute); cursor: not-allowed; text-decoration: line-through; }
+
+  .booking-footer { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .booking-footer-btn { padding: 12px 28px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .btn-back { border: 1.5px solid var(--border); background: white; color: var(--ink-soft); }
+  .btn-back:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .btn-continue { border: none; background: var(--blue); color: white; }
+  .btn-continue:hover { background: var(--blue-mid); }
+
+  .booking-sidebar { background: white; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 24px; }
+  .sidebar-title { font-size: 14px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; font-size: 12px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--surface); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { font-size: 13px; color: var(--ink-soft); }
+  .summary-val { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .summary-val.highlight { color: var(--green); }
+  .ins-card { background: var(--blue-light); border-radius: var(--radius-sm); padding: 12px; margin-top: 12px; }
+  .ins-card-head { font-size: 12px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .ins-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .ins-status { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: var(--green-light); border-radius: var(--radius-sm); margin-top: 12px; font-size: 13px; font-weight: 500; color: var(--green); }
+  .cost-estimate { background: var(--surface); border-radius: var(--radius-sm); padding: 16px; margin-top: 16px; }
+  .cost-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .cost-row:last-child { margin-bottom: 0; padding-top: 8px; border-top: 1px solid var(--border); font-weight: 600; }
+
+  /* ────────────────────────────── SCREEN 3: PATIENT DASHBOARD ────────────────────────────── */
+  .dashboard-wrap { padding: 32px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: start; max-width: 1200px; margin: 0 auto; }
+  .sidebar-nav { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow); }
+  .sidebar-user { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .sidebar-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; font-weight: 600; }
+  .sidebar-user-info h4 { font-size: 14px; font-weight: 600; }
+  .sidebar-user-info p { font-size: 12px; color: var(--ink-mute); }
+  .sidebar-menu { padding: 8px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
+  .sidebar-item:hover { background: var(--surface); color: var(--ink); }
+  .sidebar-item.active { background: var(--blue-light); color: var(--blue); }
+  .sidebar-item .icon { font-size: 18px; width: 24px; text-align: center; }
+  .sidebar-badge { margin-left: auto; background: var(--red); color: white; border-radius: 100px; padding: 1px 7px; font-size: 11px; font-weight: 700; }
+
+  .dash-main { display: flex; flex-direction: column; gap: 20px; }
+  .dash-welcome { background: linear-gradient(135deg, var(--blue) 0%, #0C9085 100%); border-radius: var(--radius); padding: 24px 28px; color: white; display: flex; align-items: center; justify-content: space-between; }
+  .dash-welcome h2 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; margin-bottom: 4px; }
+  .dash-welcome p { opacity: 0.8; font-size: 14px; }
+  .dash-welcome-cta { background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4); color: white; padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px); white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat-card { background: white; border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .stat-icon { font-size: 24px; margin-bottom: 10px; }
+  .stat-val { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .stat-label { font-size: 12px; color: var(--ink-mute); font-weight: 500; }
+
+  .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card-action { font-size: 13px; color: var(--blue); font-weight: 500; cursor: pointer; }
+  .card-body { padding: 16px 20px; }
+
+  .appt-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--surface); align-items: center; }
+  .appt-item:last-child { border-bottom: none; }
+  .appt-date { background: var(--blue-light); border-radius: var(--radius-sm); padding: 8px 12px; text-align: center; min-width: 52px; }
+  .appt-date-day { font-size: 20px; font-weight: 700; color: var(--blue); line-height: 1; }
+  .appt-date-mon { font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+  .appt-info { flex: 1; }
+  .appt-doc { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .appt-detail { font-size: 12px; color: var(--ink-mute); }
+  .appt-type { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .type-video { background: var(--blue-light); color: var(--blue); }
+  .type-inperson { background: var(--teal-light); color: var(--teal); }
+  .appt-join-btn { background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 6px; }
+
+  .med-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--surface); }
+  .med-item:last-child { border-bottom: none; }
+  .med-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .med-info { flex: 1; }
+  .med-name { font-size: 14px; font-weight: 600; margin-bottom: 1px; }
+  .med-dose { font-size: 12px; color: var(--ink-mute); }
+  .refill-btn { font-size: 12px; font-weight: 600; color: var(--teal); cursor: pointer; border: 1px solid var(--teal); padding: 4px 10px; border-radius: 100px; background: none; font-family: 'DM Sans', sans-serif; }
+
+  .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .vital-box { background: var(--surface); border-radius: var(--radius-sm); padding: 12px; }
+  .vital-label { font-size: 11px; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .vital-val { font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .vital-unit { font-size: 12px; color: var(--ink-mute); }
+  .vital-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; }
+  .status-ok { color: var(--green); }
+  .status-warn { color: var(--yellow); }
+
+  /* ────────────────────────────── SCREEN 4: VIDEO CALL ────────────────────────────── */
+  .video-wrap { background: #0D1B2A; min-height: calc(100vh - 64px - 48px); display: grid; grid-template-rows: 1fr auto; }
+  .video-main { display: grid; grid-template-columns: 1fr 300px; gap: 0; min-height: 500px; }
+  .video-primary { position: relative; background: #1a2740; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .video-bg-pattern { position: absolute; inset: 0; background: linear-gradient(135deg, #1a2740, #0C9085 200%); opacity: 0.5; }
+  .video-doc-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #0C9085, #1366D6); display: flex; align-items: center; justify-content: center; color: white; font-size: 42px; font-weight: 700; position: relative; z-index: 1; }
+  .video-doc-name { color: white; font-size: 18px; font-weight: 600; margin-top: 16px; position: relative; z-index: 1; }
+  .video-doc-sub { color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 4px; position: relative; z-index: 1; }
+  .video-pulse { width: 140px; height: 140px; border-radius: 50%; border: 2px solid rgba(19,102,214,0.3); position: absolute; animation: pulse 2s infinite; }
+  .video-pulse-2 { width: 170px; height: 170px; border-radius: 50%; border: 2px solid rgba(19,102,214,0.2); position: absolute; animation: pulse 2s 0.5s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } }
+  .video-self { position: absolute; bottom: 20px; right: 20px; width: 140px; height: 100px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: var(--radius-sm); border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 700; z-index: 2; }
+  .video-time { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; backdrop-filter: blur(8px); z-index: 2; display: flex; align-items: center; gap: 8px; }
+  .rec-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; animation: blink 1s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .video-panel { background: #111827; border-left: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; }
+  .video-panel-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .vp-tab { flex: 1; padding: 14px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); cursor: pointer; text-align: center; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .vp-tab.active { color: white; border-bottom-color: var(--blue); }
+  .video-chat { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+  .chat-msg { max-width: 80%; }
+  .chat-msg.patient { align-self: flex-end; }
+  .chat-bubble { padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+  .chat-msg.doctor .chat-bubble { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); border-bottom-left-radius: 4px; }
+  .chat-msg.patient .chat-bubble { background: var(--blue); color: white; border-bottom-right-radius: 4px; }
+  .chat-who { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .chat-msg.patient .chat-who { text-align: right; }
+  .chat-input-wrap { padding: 12px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; }
+  .chat-input { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; color: white; font-family: 'DM Sans', sans-serif; outline: none; }
+  .chat-input::placeholder { color: rgba(255,255,255,0.3); }
+  .chat-send { background: var(--blue); border: none; border-radius: var(--radius-sm); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; font-size: 16px; }
+  .video-controls { background: rgba(0,0,0,0.8); backdrop-filter: blur(16px); padding: 20px 32px; display: flex; align-items: center; justify-content: center; gap: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .ctrl-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: all 0.15s; border: none; }
+  .ctrl-muted { background: rgba(255,255,255,0.1); color: white; }
+  .ctrl-muted:hover { background: rgba(255,255,255,0.2); }
+  .ctrl-active { background: rgba(255,255,255,0.1); color: white; }
+  .ctrl-end { background: var(--red); color: white; width: 60px; height: 60px; font-size: 22px; }
+  .ctrl-end:hover { background: #B91C1C; }
+  .ctrl-label { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; margin-top: 6px; }
+  .ctrl-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  /* PAGE HEADER */
+  .page-header { background: white; border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .page-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; }
+  .page-breadcrumb { font-size: 13px; color: var(--ink-mute); margin-bottom: 4px; }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .doctor-grid { grid-template-columns: 1fr; }
+    .booking-wrap { grid-template-columns: 1fr; }
+    .dashboard-wrap { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .dash-grid { grid-template-columns: 1fr; }
+    .video-main { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">M</div>
+    <span class="nav-logo-text">MedConnect</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showScreen('search')">Find a Doctor</button>
+    <button class="nav-link" onclick="showScreen('booking')">Book Appointment</button>
+    <button class="nav-link" onclick="showScreen('dashboard')">My Health</button>
+    <button class="nav-link" onclick="showScreen('video')">Video Consult</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-notif">🔔<span class="notif-dot"></span></button>
+    <div class="nav-avatar">P</div>
+  </div>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab active" onclick="showScreen('search');setActiveTab(this)">🔍 Doctor Search</div>
+  <div class="tab" onclick="showScreen('booking');setActiveTab(this)">📅 Appointment Booking</div>
+  <div class="tab" onclick="showScreen('dashboard');setActiveTab(this)">🏠 Patient Dashboard</div>
+  <div class="tab" onclick="showScreen('video');setActiveTab(this)">📹 Video Consultation</div>
+</div>
+
+<!-- ═══════════ SCREEN 1: DOCTOR SEARCH ═══════════ -->
+<div id="screen-search" class="screen active">
+  <div class="search-hero">
+    <h1 class="search-hero-title">Find the right <em>specialist</em>,<br>book in minutes.</h1>
+    <p class="search-hero-sub">Search 10,000+ verified doctors across all specialties</p>
+    <div class="search-bar-wrap">
+      <span style="font-size:20px;">🔍</span>
+      <input type="text" placeholder="Specialty, condition, or doctor name..." value="Dermatologist">
+      <div class="search-divider"></div>
+      <div class="search-location">📍 New York, NY</div>
+      <button class="search-btn">Search Doctors →</button>
+    </div>
+    <div class="search-chips">
+      <span class="search-chip">💊 Primary Care</span>
+      <span class="search-chip">🧠 Neurology</span>
+      <span class="search-chip">❤️ Cardiology</span>
+      <span class="search-chip">🦴 Orthopedics</span>
+      <span class="search-chip">👁️ Ophthalmology</span>
+      <span class="search-chip">🧴 Dermatology</span>
+      <span class="search-chip">🧬 Oncology</span>
+    </div>
+  </div>
+
+  <div class="search-body">
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="this.classList.toggle('active')">💻 Telehealth</button>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">🏥 In-Person</button>
+      <div class="filter-sep"></div>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">🛡️ Aetna ✓</button>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">📅 Available Today</button>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">⭐ 4.5+ Rating</button>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">👤 Female Doctor</button>
+      <div class="filter-sep"></div>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">🗣️ Language</button>
+      <button class="filter-btn" onclick="this.classList.toggle('active')">📍 Distance</button>
+    </div>
+
+    <div class="results-meta">
+      <div class="results-count"><strong>248 doctors</strong> found in Dermatology near New York, NY</div>
+      <div class="sort-sel">Sort: Best Match ▾</div>
+    </div>
+
+    <div class="doctor-grid">
+      <!-- Card 1 -->
+      <div class="doctor-card">
+        <div class="dc-header">
+          <div class="dc-avatar dc-av-2">SC</div>
+          <div class="dc-info">
+            <div class="dc-name">Dr. Sarah Chen, MD</div>
+            <div class="dc-spec">Dermatology • Board Certified • 12 yrs exp</div>
+            <div class="dc-rating">
+              <span class="stars">★★★★★</span>
+              <strong>4.9</strong>
+              <span>(312 reviews)</span>
+              <span class="dc-badge badge-verified">✓ Verified</span>
+            </div>
+          </div>
+        </div>
+        <div class="dc-tags">
+          <span class="dc-tag tag-ins">🛡️ Aetna · BlueCross</span>
+          <span class="dc-tag tag-loc">📍 2.3 mi</span>
+          <span class="dc-tag tag-tele">💻 Telehealth</span>
+        </div>
+        <div class="dc-avail">
+          <div class="dc-avail-text">✅ Accepting new patients</div>
+          <div class="dc-avail-time">Today · 3:00 PM</div>
+        </div>
+        <div class="dc-actions">
+          <button class="btn-ghost">View Profile</button>
+          <button class="btn-primary" onclick="showScreen('booking');setActiveTabByIndex(1)">Book Now →</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="doctor-card">
+        <div class="dc-header">
+          <div class="dc-avatar dc-av-3">JO</div>
+          <div class="dc-info">
+            <div class="dc-name">Dr. James Okafor, MD</div>
+            <div class="dc-spec">Dermatology & Cosmetic Derm • 15 yrs exp</div>
+            <div class="dc-rating">
+              <span class="stars">★★★★☆</span>
+              <strong>4.7</strong>
+              <span>(198 reviews)</span>
+              <span class="dc-badge badge-verified">✓ Verified</span>
+            </div>
+          </div>
+        </div>
+        <div class="dc-tags">
+          <span class="dc-tag tag-ins">🛡️ United · Cigna</span>
+          <span class="dc-tag tag-loc">📍 4.1 mi</span>
+          <span class="dc-tag tag-tele">💻 Telehealth</span>
+        </div>
+        <div class="dc-avail">
+          <div class="dc-avail-text">✅ Accepting new patients</div>
+          <div class="dc-avail-time">Tomorrow · 10:00 AM</div>
+        </div>
+        <div class="dc-actions">
+          <button class="btn-ghost">View Profile</button>
+          <button class="btn-primary">Book Now →</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="doctor-card">
+        <div class="dc-header">
+          <div class="dc-avatar dc-av-4">MP</div>
+          <div class="dc-info">
+            <div class="dc-name">Dr. Maria Patel, MD</div>
+            <div class="dc-spec">Dermatology · Pediatric Derm • 8 yrs exp</div>
+            <div class="dc-rating">
+              <span class="stars">★★★★★</span>
+              <strong>4.8</strong>
+              <span>(427 reviews)</span>
+              <span class="dc-badge badge-verified">✓ Verified</span>
+            </div>
+          </div>
+        </div>
+        <div class="dc-tags">
+          <span class="dc-tag tag-ins">🛡️ Humana · Medicare</span>
+          <span class="dc-tag tag-loc">📍 6.8 mi</span>
+          <span class="dc-tag tag-tele">💻 Telehealth</span>
+        </div>
+        <div class="dc-avail">
+          <div class="dc-avail-text">✅ Accepting new patients</div>
+          <div class="dc-avail-time">Feb 25 · 2:30 PM</div>
+        </div>
+        <div class="dc-actions">
+          <button class="btn-ghost">View Profile</button>
+          <button class="btn-primary">Book Now →</button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="doctor-card" style="border-color: #CBD5E1; opacity: 0.7;">
+        <div class="dc-header">
+          <div class="dc-avatar" style="background:linear-gradient(135deg,#94A3B8,#64748B)">RK</div>
+          <div class="dc-info">
+            <div class="dc-name">Dr. Robert Kim, MD</div>
+            <div class="dc-spec">Dermatology • 20 yrs exp</div>
+            <div class="dc-rating">
+              <span class="stars">★★★★☆</span>
+              <strong>4.6</strong>
+              <span>(89 reviews)</span>
+            </div>
+          </div>
+        </div>
+        <div class="dc-tags">
+          <span class="dc-tag tag-ins">🛡️ BlueCross</span>
+          <span class="dc-tag tag-loc">📍 8.2 mi</span>
+        </div>
+        <div class="dc-avail" style="background:var(--surface)">
+          <div class="dc-avail-text" style="color:var(--ink-mute)">⏳ Waitlist available</div>
+          <div class="dc-avail-time" style="color:var(--ink-soft)">Mar 3</div>
+        </div>
+        <div class="dc-actions">
+          <button class="btn-ghost">View Profile</button>
+          <button class="btn-ghost">Join Waitlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 2: BOOKING ═══════════ -->
+<div id="screen-booking" class="screen">
+  <div style="padding:24px 32px 0; background:var(--surface);">
+    <div class="page-breadcrumb">Search Results → Dr. Sarah Chen → Book Appointment</div>
+    <h1 class="page-title">Book an Appointment</h1>
+  </div>
+  <div class="booking-wrap">
+    <div class="booking-main">
+      <div class="booking-header">
+        <div class="booking-doc-av">SC</div>
+        <div class="booking-doc-info">
+          <h2>Dr. Sarah Chen, MD</h2>
+          <p>Dermatology · Board Certified · ⭐ 4.9 (312 reviews)</p>
+        </div>
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <span class="dc-tag tag-tele" style="font-size:13px;">💻 Video Visit</span>
+        </div>
+      </div>
+
+      <div class="booking-steps">
+        <div class="bstep done"><div class="bstep-num"></div>Visit Type</div>
+        <div class="bstep done"><div class="bstep-num"></div>Reason</div>
+        <div class="bstep active"><div class="bstep-num">3</div>Date & Time</div>
+        <div class="bstep"><div class="bstep-num">4</div>Insurance</div>
+        <div class="bstep"><div class="bstep-num">5</div>Payment</div>
+        <div class="bstep"><div class="bstep-num">6</div>Confirm</div>
+      </div>
+
+      <div class="booking-content">
+        <div class="booking-section-title">Select a Date & Time</div>
+        <p class="booking-section-sub">All times shown in Eastern Time (ET). Slots update in real-time.</p>
+
+        <div class="cal-nav">
+          <button class="cal-nav-btn">‹</button>
+          <div class="cal-month">February 2026</div>
+          <button class="cal-nav-btn">›</button>
+        </div>
+
+        <div class="cal-grid">
+          <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+          <div class="cal-day other">25</div><div class="cal-day other">26</div><div class="cal-day other">27</div><div class="cal-day other">28</div><div class="cal-day other">29</div><div class="cal-day other">30</div><div class="cal-day other">31</div>
+          <div class="cal-day past">1</div><div class="cal-day past">2</div><div class="cal-day past">3</div><div class="cal-day past">4</div><div class="cal-day past">5</div><div class="cal-day past">6</div><div class="cal-day past">7</div>
+          <div class="cal-day past">8</div><div class="cal-day past">9</div><div class="cal-day past">10</div><div class="cal-day past">11</div><div class="cal-day past">12</div><div class="cal-day past">13</div><div class="cal-day past">14</div>
+          <div class="cal-day past">15</div><div class="cal-day past">16</div><div class="cal-day past">17</div><div class="cal-day past">18</div><div class="cal-day past">19</div><div class="cal-day past">20</div><div class="cal-day past">21</div>
+          <div class="cal-day past">22</div><div class="cal-day past">23</div><div class="cal-day available has-slots" onclick="selectDay(this)">24</div><div class="cal-day available has-slots selected" onclick="selectDay(this)">25</div><div class="cal-day available has-slots" onclick="selectDay(this)">26</div><div class="cal-day available has-slots" onclick="selectDay(this)">27</div><div class="cal-day available has-slots" onclick="selectDay(this)">28</div>
+        </div>
+
+        <div class="time-slots">
+          <h4>Available Times — Tuesday, Feb 25</h4>
+          <div class="time-grid">
+            <div class="time-slot booked">9:00 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">9:30 AM</div>
+            <div class="time-slot selected" onclick="selectSlot(this)">10:00 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">10:30 AM</div>
+            <div class="time-slot booked">11:00 AM</div>
+            <div class="time-slot booked">11:30 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">1:00 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">1:30 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">2:00 PM</div>
+            <div class="time-slot booked">2:30 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">3:00 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">3:30 PM</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding:14px; background:var(--surface); border-radius:var(--radius-sm); font-size:13px; color:var(--ink-soft); display:flex; align-items:center; gap:10px;">
+          <span>📅</span> <span>Add to calendar after booking: <strong>Google Calendar</strong> · <strong>Apple Calendar</strong> · <strong>Outlook</strong></span>
+        </div>
+      </div>
+
+      <div class="booking-footer">
+        <button class="booking-footer-btn btn-back">← Back</button>
+        <button class="booking-footer-btn btn-continue">Continue to Insurance →</button>
+      </div>
+    </div>
+
+    <div class="booking-sidebar">
+      <div class="sidebar-title">Booking Summary</div>
+      <div class="summary-row"><span class="summary-label">Doctor</span><span class="summary-val">Dr. Sarah Chen</span></div>
+      <div class="summary-row"><span class="summary-label">Specialty</span><span class="summary-val">Dermatology</span></div>
+      <div class="summary-row"><span class="summary-label">Visit Type</span><span class="summary-val">💻 Video Call</span></div>
+      <div class="summary-row"><span class="summary-label">Appointment</span><span class="summary-val">New Patient</span></div>
+      <div class="summary-row"><span class="summary-label">Date</span><span class="summary-val">Tue, Feb 25, 2026</span></div>
+      <div class="summary-row"><span class="summary-label">Time</span><span class="summary-val">10:00 AM ET</span></div>
+      <div class="summary-row"><span class="summary-label">Duration</span><span class="summary-val">30 minutes</span></div>
+
+      <div class="ins-card">
+        <div class="ins-card-head">🛡️ Insurance</div>
+        <div class="ins-row"><span>Aetna PPO</span><span style="color:var(--green);font-weight:600;">In-Network ✓</span></div>
+        <div class="ins-row"><span>Member ID</span><span>AET-1234567</span></div>
+        <div class="ins-row"><span>Group</span><span>88901</span></div>
+      </div>
+
+      <div class="ins-status">✅ Eligibility Verified</div>
+
+      <div class="cost-estimate">
+        <div class="sidebar-title" style="margin-bottom:12px;">Cost Estimate</div>
+        <div class="cost-row"><span>Billed to insurance</span><span>$185.00</span></div>
+        <div class="cost-row"><span>Insurance covers</span><span>~$148.00</span></div>
+        <div class="cost-row"><span style="color:var(--green);font-size:15px;">Your est. copay</span><span style="color:var(--green);font-size:15px;">~$37.00</span></div>
+      </div>
+
+      <div style="margin-top:16px; font-size:12px; color:var(--ink-mute); line-height:1.5;">
+        Estimate based on your plan benefits. Final cost determined after visit.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 3: DASHBOARD ═══════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="dashboard-wrap">
+    <!-- Sidebar -->
+    <div class="sidebar-nav">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">P</div>
+        <div class="sidebar-user-info">
+          <h4>Priya Mehta</h4>
+          <p>Patient · Aetna PPO</p>
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-item active"><span class="icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item"><span class="icon">📅</span>Appointments<span class="sidebar-badge">2</span></div>
+        <div class="sidebar-item"><span class="icon">📋</span>Health Records</div>
+        <div class="sidebar-item"><span class="icon">💊</span>Medications</div>
+        <div class="sidebar-item"><span class="icon">🧪</span>Lab Results<span class="sidebar-badge">1</span></div>
+        <div class="sidebar-item"><span class="icon">💬</span>Messages<span class="sidebar-badge">3</span></div>
+        <div class="sidebar-item"><span class="icon">💳</span>Billing</div>
+        <div class="sidebar-item"><span class="icon">👪</span>Family</div>
+        <div class="sidebar-item"><span class="icon">⚙️</span>Settings</div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="dash-main">
+      <div class="dash-welcome">
+        <div>
+          <h2>Good morning, Priya ☀️</h2>
+          <p>You have 2 upcoming appointments this week</p>
+        </div>
+        <button class="dash-welcome-cta" onclick="showScreen('search');setActiveTabByIndex(0)">+ Book Appointment</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-val">2</div>
+          <div class="stat-label">Upcoming Appts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💊</div>
+          <div class="stat-val">3</div>
+          <div class="stat-label">Active Medications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🧪</div>
+          <div class="stat-val" style="color:var(--orange);">1</div>
+          <div class="stat-label">Results Pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💬</div>
+          <div class="stat-val" style="color:var(--blue);">3</div>
+          <div class="stat-label">Unread Messages</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <!-- Appointments -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📅 Upcoming Appointments</div>
+            <div class="card-action">View All</div>
+          </div>
+          <div class="card-body">
+            <div class="appt-item">
+              <div class="appt-date">
+                <div class="appt-date-day">25</div>
+                <div class="appt-date-mon">FEB</div>
+              </div>
+              <div class="appt-info">
+                <div class="appt-doc">Dr. Sarah Chen, MD</div>
+                <div class="appt-detail">Dermatology · 10:00 AM ET · 30 min</div>
+              </div>
+              <span class="appt-type type-video">💻 Video</span>
+              <button class="appt-join-btn" onclick="showScreen('video');setActiveTabByIndex(3)">Join →</button>
+            </div>
+            <div class="appt-item">
+              <div class="appt-date">
+                <div class="appt-date-day">3</div>
+                <div class="appt-date-mon">MAR</div>
+              </div>
+              <div class="appt-info">
+                <div class="appt-doc">Dr. Raj Patel, MD</div>
+                <div class="appt-detail">Primary Care · 9:30 AM ET · 45 min</div>
+              </div>
+              <span class="appt-type type-inperson">🏥 In-Person</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vitals -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">❤️ My Vitals</div>
+            <div class="card-action">+ Log Reading</div>
+          </div>
+          <div class="card-body">
+            <div class="vitals-grid">
+              <div class="vital-box">
+                <div class="vital-label">Blood Pressure</div>
+                <div class="vital-val">118<span style="font-size:14px; color:var(--ink-mute);">/74</span></div>
+                <div class="vital-unit">mmHg · 2h ago</div>
+                <div class="vital-status status-ok">● Normal</div>
+              </div>
+              <div class="vital-box">
+                <div class="vital-label">Heart Rate</div>
+                <div class="vital-val">72</div>
+                <div class="vital-unit">bpm · 2h ago</div>
+                <div class="vital-status status-ok">● Normal</div>
+              </div>
+              <div class="vital-box">
+                <div class="vital-label">Blood Glucose</div>
+                <div class="vital-val">104</div>
+                <div class="vital-unit">mg/dL · This morning</div>
+                <div class="vital-status status-warn">● Borderline</div>
+              </div>
+              <div class="vital-box">
+                <div class="vital-label">Weight</div>
+                <div class="vital-val">136</div>
+                <div class="vital-unit">lbs · Yesterday</div>
+                <div class="vital-status status-ok">● On track</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medications -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">💊 Active Medications</div>
+            <div class="card-action">View All</div>
+          </div>
+          <div class="card-body">
+            <div class="med-item">
+              <div class="med-icon" style="background:var(--blue-light);">💊</div>
+              <div class="med-info">
+                <div class="med-name">Metformin 500mg</div>
+                <div class="med-dose">Twice daily · Dr. Patel · 3 refills left</div>
+              </div>
+              <button class="refill-btn">Refill</button>
+            </div>
+            <div class="med-item">
+              <div class="med-icon" style="background:var(--teal-light);">🧴</div>
+              <div class="med-info">
+                <div class="med-name">Hydrocortisone 1% Cream</div>
+                <div class="med-dose">Apply twice daily · Dr. Chen · 1 refill left</div>
+              </div>
+              <button class="refill-btn">Refill</button>
+            </div>
+            <div class="med-item">
+              <div class="med-icon" style="background:var(--orange-light);">💉</div>
+              <div class="med-info">
+                <div class="med-name">Loratadine 10mg</div>
+                <div class="med-dose">Once daily as needed · Dr. Patel</div>
+              </div>
+              <button class="refill-btn">Refill</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lab Results -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🧪 Lab Results</div>
+            <div class="card-action">View History</div>
+          </div>
+          <div class="card-body">
+            <div class="appt-item" style="border-color:var(--orange-light); background:var(--orange-light); border-radius:var(--radius-sm); padding:12px; margin-bottom:10px;">
+              <div style="font-size:20px;">⚠️</div>
+              <div class="appt-info">
+                <div class="appt-doc">HbA1c — Result Ready</div>
+                <div class="appt-detail">Ordered Feb 20 · LabCorp · <strong style="color:var(--orange)">Review required</strong></div>
+              </div>
+              <button class="btn-primary" style="padding:8px 16px; font-size:13px;">View →</button>
+            </div>
+            <div class="appt-item">
+              <div style="font-size:20px;">✅</div>
+              <div class="appt-info">
+                <div class="appt-doc">Complete Blood Count</div>
+                <div class="appt-detail">Feb 10 · All values normal</div>
+              </div>
+              <div style="font-size:12px; color:var(--green); font-weight:600;">Normal</div>
+            </div>
+            <div class="appt-item">
+              <div style="font-size:20px;">✅</div>
+              <div class="appt-info">
+                <div class="appt-doc">Lipid Panel</div>
+                <div class="appt-detail">Jan 28 · Cholesterol 182 mg/dL</div>
+              </div>
+              <div style="font-size:12px; color:var(--green); font-weight:600;">Normal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 4: VIDEO CALL ═══════════ -->
+<div id="screen-video" class="screen">
+  <div class="video-wrap">
+    <div class="video-main">
+      <div class="video-primary">
+        <div class="video-bg-pattern"></div>
+        <div class="video-pulse-2"></div>
+        <div class="video-pulse"></div>
+        <div style="display:flex; flex-direction:column; align-items:center; position:relative; z-index:1;">
+          <div class="video-doc-avatar">SC</div>
+          <div class="video-doc-name">Dr. Sarah Chen, MD</div>
+          <div class="video-doc-sub">Dermatologist · In session</div>
+        </div>
+        <div class="video-self">P</div>
+        <div class="video-time"><span class="rec-dot"></span>24:37</div>
+      </div>
+
+      <div class="video-panel">
+        <div class="video-panel-tabs">
+          <div class="vp-tab active">💬 Chat</div>
+          <div class="vp-tab">📋 Notes</div>
+          <div class="vp-tab">📎 Files</div>
+        </div>
+        <div class="video-chat">
+          <div class="chat-msg doctor">
+            <div class="chat-who">Dr. Sarah Chen</div>
+            <div class="chat-bubble">Hi Priya! I can see the photos you uploaded. Can you describe when the rash started and if there's any itching?</div>
+          </div>
+          <div class="chat-msg patient">
+            <div class="chat-who">You</div>
+            <div class="chat-bubble">It started about 2 weeks ago. Yes, it's quite itchy, especially at night.</div>
+          </div>
+          <div class="chat-msg doctor">
+            <div class="chat-who">Dr. Sarah Chen</div>
+            <div class="chat-bubble">I'm sending over a prescription now. You'll get a notification once it's sent to your pharmacy.</div>
+          </div>
+          <div class="chat-msg doctor">
+            <div class="chat-who">Dr. Sarah Chen</div>
+            <div class="chat-bubble">📋 <strong>Rx sent:</strong> Hydrocortisone 1% Cream — Walgreens, 5th Ave</div>
+          </div>
+          <div class="chat-msg patient">
+            <div class="chat-who">You</div>
+            <div class="chat-bubble">Thank you! Should I follow up if it doesn't improve?</div>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <input class="chat-input" type="text" placeholder="Type a message...">
+          <button class="chat-send">↑</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-controls">
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-muted">🎤</button>
+        <div class="ctrl-label">Mute</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-active">📹</button>
+        <div class="ctrl-label">Camera</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-muted">🖥️</button>
+        <div class="ctrl-label">Share Screen</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-muted">💬</button>
+        <div class="ctrl-label">Chat</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-muted">👥</button>
+        <div class="ctrl-label">Participants</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-end">📵</button>
+        <div class="ctrl-label" style="color:var(--red);">End Call</div>
+      </div>
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn ctrl-muted">⋯</button>
+        <div class="ctrl-label">More</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+function setActiveTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function setActiveTabByIndex(i) {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  if (tabs[i]) tabs[i].classList.add('active');
+}
+function selectDay(el) {
+  document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectSlot(el) {
+  document.querySelectorAll('.time-slot:not(.booked)').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// Wire up nav buttons with tab sync
+document.querySelectorAll('.nav-link').forEach((link, i) => {
+  link.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    setActiveTabByIndex(i);
+  });
+});
+</script>
+</body>
+</html>
